@@ -1,5 +1,5 @@
 import logging
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update
 from telegram.ext import filters, MessageHandler, ApplicationBuilder, CommandHandler, ContextTypes
 from telegram.ext import CommandHandler
 from tkinter import *
@@ -14,7 +14,7 @@ APItoken = "5597776676:AAG9mMM2BhWv9y10CQ3ooDaVhokWo3cg9fo"
 update_mood = 0
 pictures = 0
 
-
+user_id = [927737771, 177508822]
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -23,15 +23,19 @@ logging.basicConfig(
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message( chat_id=update.effective_chat.id, text=
-        "/update To force an update on the users screen \n" +
-        "/show_pictures To view all the pictures currently on the frame \n" +
-        "or reply to this message with a picture to add it to the digital frame!")
+    print("message: ", update.message.chat_id, "effictive_chat: ", update.effective_chat.id)
+
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=
+    "/update To force an update on the users screen \n" +
+    "/show_pictures To view all the pictures currently on the frame \n" +
+    "or reply to this message with a picture to add it to the digital frame!")
+
 
 async def show_pictures(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global pictures
     str_pictures = str(pictures)
-    await context.bot.send_message( chat_id=update.effective_chat.id, text="There are currently " + str_pictures + " pictures on the frame!")
+    await context.bot.send_message(chat_id=update.effective_chat.id,
+                                   text="There are currently " + str_pictures + " pictures on the frame!")
 
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -65,6 +69,8 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "Photo received!"
     )
+
+
 async def caps(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text_caps = ' '.join(context.args).upper()
     print("got the caps command")
@@ -86,9 +92,19 @@ async def call(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def update_pls(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    global update_mood
+    global update_mood, user1_id, user2_id
+    # chat_id=update.effective_chat.id,
     await context.bot.send_message(chat_id=update.effective_chat.id,
                                    text="Sending update request to CareHub! Please wait for a response.")
+
+    for id in user_id:
+        # ACtually WORKIGN!
+        text_string = "user_", id
+
+        await context.bot.send_message(chat_id=id,
+                                       text=text_string)
+    # await context.bot.send_message(chat_id=user2_id,
+    # text="User_2")
 
     update_mood = draw_window()
     if update_mood == 1:
@@ -134,7 +150,6 @@ def draw_window():
 
 if __name__ == '__main__':
 
-
     application = ApplicationBuilder().token(APItoken).build()
 
     folder_dir = os.getcwd()
@@ -143,8 +158,6 @@ if __name__ == '__main__':
         if (images.endswith(".png") or images.endswith(".jpg")):
             print(images)
             pictures = pictures + 1
-
-
 
     start_handler = CommandHandler('start', start)
     show_handler = CommandHandler('show_pictures', show_pictures)

@@ -1,11 +1,19 @@
 import logging
 import secrets
 import asyncio
+import time
+import keyboard
+
+#from selenium import webdriver
+#from selenium.webdriver.chrome.options import Options
+
 from telegram import Update
 import telegram
 from telegram.ext import filters, MessageHandler, ApplicationBuilder, CommandHandler, ContextTypes
 from tkinter import *
 from PIL import Image, ImageTk
+import webbrowser, os, sys
+from os import listdir
 
 import threading
 
@@ -65,14 +73,31 @@ async def call(user):
     url = generated_URL
 
     # linux only
-    # chrome_path = '/usr/lib/chromium-browser/chromium-browser'
+    chrome_path = '/usr/lib/chromium-browser/chromium-browser'
 
     await telegram.Bot(APItoken).sendMessage(chat_id=user_id[user], text="Hello, i'd like to video chat with you!")
     await telegram.Bot(APItoken).sendMessage(chat_id=user_id[user], text=generated_URL)
 
     # linux only
-    # webbrowser.get(chrome_path).open(url)
-
+    webbrowser.get(chrome_path).open(url)
+    #os.system("chromium-browser --start-fullscreen " + url)
+    #chrome_options = Options()
+    #chrome_options.add_argument("headless")
+    
+    #driver = webdriver.Chrome()
+    print("here before time")
+    #driver.get(url)
+    keyboard.press_and_release("F11")
+    time.sleep(10)
+    keyboard.press_and_release("return")
+    print("enter was pressed maybe")
+    time.sleep(10)
+    keyboard.press_and_release("ctrl+w")
+    
+    print("after time")
+    #driver.quit()
+    print ("after the browser")
+    
 
 def start_bot():
 

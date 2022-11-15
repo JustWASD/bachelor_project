@@ -4,8 +4,10 @@ import asyncio
 import time
 import keyboard
 
-#from selenium import webdriver
-#from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 
 from telegram import Update
 import telegram
@@ -71,32 +73,39 @@ async def call(user):
 
     generated_URL = "https://meet.jit.si/" + secrets.token_urlsafe()
     url = generated_URL
+    
+    chrome_options = Options()
+    chrome_options.add_experimental_option("useAutomationExtension", False)
+    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    chrome_options.add_argument("--kiosk");
+    chrome_options.add_argument("use-fake-ui-for-media-stream")
+    #chrome_options.add_experimental_option("detach", True)
 
     # linux only
-    chrome_path = '/usr/lib/chromium-browser/chromium-browser'
+    #chrome_path = '/usr/lib/chromium-browser/chromium-browser'
 
     await telegram.Bot(APItoken).sendMessage(chat_id=user_id[user], text="Hello, i'd like to video chat with you!")
     await telegram.Bot(APItoken).sendMessage(chat_id=user_id[user], text=generated_URL)
 
-    # linux only
-    webbrowser.get(chrome_path).open(url)
-    #os.system("chromium-browser --start-fullscreen " + url)
-    #chrome_options = Options()
-    #chrome_options.add_argument("headless")
     
-    #driver = webdriver.Chrome()
-    print("here before time")
-    #driver.get(url)
-    keyboard.press_and_release("F11")
-    time.sleep(10)
-    keyboard.press_and_release("return")
-    print("enter was pressed maybe")
-    time.sleep(10)
-    keyboard.press_and_release("ctrl+w")
     
-    print("after time")
-    #driver.quit()
-    print ("after the browser")
+    
+    
+    
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.get(url)
+    
+    time.sleep(3)
+    login = driver.find_element(By.CLASS_NAME, 'field  ')
+
+    login.send_keys("pycon")
+    login.send_keys(Keys.RETURN)
+
+
+    time.sleep(30)
+
+
+    driver.close()
     
 
 def start_bot():
@@ -165,6 +174,19 @@ class TkinterWindow(threading.Thread):
         btn_sad.pack(side='left')
 
         return update_mood
+    
+    def draw_wait_window(self):
+        
+        call_connect = Toplevel(self.root)
+        call_connect.title("Anruf")
+        call_connect.attributes("-fullscreen", True)
+        call_connect.focus_set()
+        call_connect.config(bg="green")
+        label1 = Label(call_connect, text="Bitte warten")
+        label1.pack()
+        
+        #time.sleep(30)
+        #call_connect.destroy()
 
     def draw_call(self):
 
@@ -192,7 +214,7 @@ class TkinterWindow(threading.Thread):
         bild3 = ImageTk.PhotoImage(bild3)
 
         btn1 = Button(call_window, image=bild1)
-        btn2 = Button(call_window, image=bild2, command=self.call_gabs)
+        btn2 = Button(call_window, image=bild2, command=lambda: call_gabs(call_window))
         btn3 = Button(call_window, image=bild3)
         btn4 = Button(call_window, text="Close", command=call_window.destroy)
 
@@ -222,8 +244,12 @@ class TkinterWindow(threading.Thread):
         update_mood = 1
         update_window.destroy()
 
-    def call_gabs(self):
-        asyncio.run(call(0))
+def call_gabs(call_window):
+    call_window.destroy()
+    time.sleep(3)
+    tkinter_window.draw_wait_window()
+    
+    asyncio.run(call(0))
 
 
 

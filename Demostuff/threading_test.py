@@ -27,6 +27,7 @@ APItoken = "5597776676:AAG9mMM2BhWv9y10CQ3ooDaVhokWo3cg9fo"
 update_mood = 0
 pictures = 0
 sent_msg = 0
+url = " "
 
 user_id = [927737771, 177508822]
 
@@ -69,44 +70,43 @@ async def update_pls(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def call(user):
 
-    global user_id
+    global user_id, url
 
     generated_URL = "https://meet.jit.si/" + secrets.token_urlsafe()
     url = generated_URL
+
+
+    await telegram.Bot(APItoken).sendMessage(chat_id=user_id[user], text="Hello, i'd like to video chat with you!")
+    if await telegram.Bot(APItoken).sendMessage(chat_id=user_id[user], text=generated_URL):
+        return 1
+
+
     
+def start_call():
+
+
     chrome_options = Options()
     chrome_options.add_experimental_option("useAutomationExtension", False)
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
     chrome_options.add_argument("--kiosk");
     chrome_options.add_argument("use-fake-ui-for-media-stream")
-    #chrome_options.add_experimental_option("detach", True)
+    # chrome_options.add_experimental_option("detach", True)
 
     # linux only
-    #chrome_path = '/usr/lib/chromium-browser/chromium-browser'
+    # chrome_path = '/usr/lib/chromium-browser/chromium-browser'
 
-    await telegram.Bot(APItoken).sendMessage(chat_id=user_id[user], text="Hello, i'd like to video chat with you!")
-    await telegram.Bot(APItoken).sendMessage(chat_id=user_id[user], text=generated_URL)
-
-    
-    
-    
-    
-    
     driver = webdriver.Chrome(options=chrome_options)
     driver.get(url)
-    
+
     time.sleep(3)
     login = driver.find_element(By.CLASS_NAME, 'field  ')
 
     login.send_keys("pycon")
     login.send_keys(Keys.RETURN)
 
-
     time.sleep(30)
 
-
     driver.close()
-    
 
 def start_bot():
 
@@ -245,12 +245,13 @@ class TkinterWindow(threading.Thread):
         update_window.destroy()
 
 def call_gabs(call_window):
-    call_window.destroy()
-    time.sleep(3)
-    tkinter_window.draw_wait_window()
-    
-    asyncio.run(call(0))
 
+    success = asyncio.run(call(0))
+
+    if success == 1:
+        call_window.destroy()
+        tkinter_window.draw_wait_window()
+        start_call()
 
 
 

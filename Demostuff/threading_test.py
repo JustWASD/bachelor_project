@@ -2,7 +2,6 @@ import logging
 import secrets
 import asyncio
 import time
-import keyboard
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -78,6 +77,7 @@ async def call(user):
 
     await telegram.Bot(APItoken).sendMessage(chat_id=user_id[user], text="Hello, i'd like to video chat with you!")
     if await telegram.Bot(APItoken).sendMessage(chat_id=user_id[user], text=generated_URL):
+        print("nachricht gesendet")
         return 1
 
 
@@ -90,10 +90,6 @@ def start_call():
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
     chrome_options.add_argument("--kiosk");
     chrome_options.add_argument("use-fake-ui-for-media-stream")
-    # chrome_options.add_experimental_option("detach", True)
-
-    # linux only
-    # chrome_path = '/usr/lib/chromium-browser/chromium-browser'
 
     driver = webdriver.Chrome(options=chrome_options)
     driver.get(url)
@@ -101,7 +97,7 @@ def start_call():
     time.sleep(3)
     login = driver.find_element(By.CLASS_NAME, 'field  ')
 
-    login.send_keys("pycon")
+    login.send_keys("Gast")
     login.send_keys(Keys.RETURN)
 
     time.sleep(30)
@@ -118,8 +114,6 @@ def start_bot():
     application.add_handler(start_handler)
     application.add_handler(update_handler)
     application.run_polling()
-
-
 
 
 class TkinterWindow(threading.Thread):
@@ -184,7 +178,6 @@ class TkinterWindow(threading.Thread):
         call_connect.config(bg="green")
         label1 = Label(call_connect, text="Bitte warten")
         label1.pack()
-        
         #time.sleep(30)
         #call_connect.destroy()
 
@@ -247,11 +240,16 @@ class TkinterWindow(threading.Thread):
 def call_gabs(call_window):
 
     success = asyncio.run(call(0))
-
+    
     if success == 1:
-        call_window.destroy()
+        browser_thread = threading.Thread(target=start_call)
+        browser_thread.start()
+        
+        time.sleep(5)
         tkinter_window.draw_wait_window()
-        start_call()
+        call_window.destroy()
+        
+    
 
 
 

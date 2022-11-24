@@ -7,6 +7,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions
 
 from telegram import Update
 import telegram
@@ -27,6 +29,7 @@ update_mood = 0
 pictures = 0
 sent_msg = 0
 url = " "
+call_connect = " "
 
 user_id = [927737771, 177508822]
 
@@ -83,7 +86,8 @@ async def call(user):
 
     
 def start_call():
-
+    global call_connect
+    connected = 0
 
     chrome_options = Options()
     chrome_options.add_experimental_option("useAutomationExtension", False)
@@ -94,15 +98,43 @@ def start_call():
     driver = webdriver.Chrome(options=chrome_options)
     driver.get(url)
 
-    time.sleep(3)
+    time.sleep(4)
     login = driver.find_element(By.CLASS_NAME, 'field  ')
-
+    driver.find_element(By.CLASS_NAME, 'chrome-extension-banner__close-container').click()
+    
+    
+    #logs in 
     login.send_keys("Gast")
     login.send_keys(Keys.RETURN)
-
-    time.sleep(30)
-
-    driver.close()
+    
+    # wait 2min30secs for second person to join the call
+    try:
+        WebDriverWait(driver, 150).until(
+        expected_conditions.presence_of_element_located((By.CLASS_NAME, 'stage-participant-label')))
+        print("connected")
+        connected = 1
+    except: 
+        print("timed out!")
+    finally:
+        call_connect.destroy()
+        print (connected)
+    
+    # for x in range(20):
+        # print(str(x) + " Seconds")
+        # time.sleep(1)
+    print("before if")
+    
+    
+    if connected == 1:
+        print("In if")
+        #while True:
+            #try:
+                # except NoSuchElementException
+                # (By.CLASS_NAME, 'stage-participant-label'))
+            #time.sleep(5)
+            #print("in while")
+    else:
+        driver.close()
 
 def start_bot():
 
@@ -170,6 +202,7 @@ class TkinterWindow(threading.Thread):
         return update_mood
     
     def draw_wait_window(self):
+        global call_connect
         
         call_connect = Toplevel(self.root)
         call_connect.title("Anruf")

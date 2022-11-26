@@ -25,7 +25,7 @@ class TkinterWindow(Thread):
 
         img = ImageTk.PhotoImage(Image.open(path))
 
-        # The Label widget is a standard Tkinter widget used to display a text or image on the screen.
+        # The Label widget is a standard Tkinter widget used to display a text or happy_icon on the screen.
         panel = Label(self.root, image=img)
 
         # The Pack geometry manager packs widgets in rows or columns.

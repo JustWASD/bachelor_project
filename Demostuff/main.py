@@ -154,7 +154,7 @@ if __name__ == '__main__':
 
     folder_dir = os.getcwd()
     for images in os.listdir(folder_dir):
-        # check if the image ends with png
+        # check if the happy_icon ends with png
         if (images.endswith(".png") or images.endswith(".jpg")):
             print(images)
             pictures = pictures + 1

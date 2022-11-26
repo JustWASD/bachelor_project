@@ -9,15 +9,15 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
-#from selenium.common.exceptions import TimeOutException
+
 
 from telegram import Update
 import telegram
 from telegram.ext import filters, MessageHandler, ApplicationBuilder, CommandHandler, ContextTypes
 from tkinter import *
+import tkinter.font as font
 from PIL import Image, ImageTk
-import webbrowser, os, sys
-from os import listdir
+
 
 import threading
 
@@ -25,7 +25,7 @@ import threading
 # Todo: Make this safer!
 APItoken = "5597776676:AAG9mMM2BhWv9y10CQ3ooDaVhokWo3cg9fo"
 
-
+my_font = " "
 update_mood = 0
 pictures = 0
 sent_msg = 0
@@ -179,29 +179,40 @@ class TkinterWindow(threading.Thread):
         img = ImageTk.PhotoImage(img)
 
 
-        # The Label widget is a standard Tkinter widget used to display a text or image on the screen.
+        # The Label widget is a standard Tkinter widget used to display a text or happy_icon on the screen.
         picture = Button(self.root, image=img, command=self.draw_call)
 
         # The Pack geometry manager packs widgets in rows or columns.
-        picture.pack(fill="none")
-        # TODO: NOT WORKING
-        # picture.bind("<Button-1>", draw_call())
+        picture.pack(fill=BOTH)
+
 
         self.root.mainloop()
 
     def draw_window_thread(self):
         global update_mood
+
+        happy_icon = Image.open("happy_icon.png")
+        happy_icon = happy_icon.resize((100, 100), Image.Resampling.LANCZOS)
+        # Convert the happy_icon to PhotoImage
+        happy_img = ImageTk.PhotoImage(happy_icon)
+
+        sad_icon = Image.open("sad_icon.png")
+        sad_icon = sad_icon.resize((100, 100), Image.Resampling.LANCZOS)
+        # Convert the happy_icon to PhotoImage
+        sad_img = ImageTk.PhotoImage(sad_icon)
+
+        my_font = font.Font(size=40, weight="bold")
+
         update_window = Toplevel(self.root)
         update_window.title("CareHub")
         update_window.attributes("-fullscreen", True)
         update_window.focus_set()
-        btn_happy = Button(update_window, text="Am Happy :)!", bg="#5cfac3", 
-                           command=lambda: self.clicked_happy(update_window))
-        btn_happy.pack(side='right', fill=X)
-
-        btn_sad = Button(update_window, text="Am Sad :(!", bg="#fa7070",
-                         command=lambda: self.clicked_sad(update_window))
-        btn_sad.pack(side='left', fill=X)
+        btn_happy = Button(update_window,width=15, image=happy_img, text="I Am Happy!",
+                           compound= TOP, bg="#5cfac3", font=my_font, command=lambda: self.clicked_happy(update_window))
+        btn_sad = Button(update_window, width=15, image=sad_img, text="I Am Sad!",
+                         bg="#fa7070", compound= TOP, font=my_font, command=lambda: self.clicked_sad(update_window))
+        btn_happy.pack(side=RIGHT, fill=BOTH, expand=1, padx=5, pady=5)
+        btn_sad.pack(side=LEFT, fill=BOTH, expand=1, padx=5, pady=5)
 
         return update_mood
     
@@ -229,7 +240,7 @@ class TkinterWindow(threading.Thread):
         call_window.attributes("-fullscreen", True)
         call_window.config(bg="black")
         call_window.focus_set()
-
+        my_font = font.Font(size=14, weight="bold")
 
 
         screen_width = call_window.winfo_screenwidth()
@@ -243,24 +254,24 @@ class TkinterWindow(threading.Thread):
         bild2 = ImageTk.PhotoImage(bild2)
         bild3 = ImageTk.PhotoImage(bild3)
 
-        btn1 = Button(call_window, image=bild1)
-        btn2 = Button(call_window, image=bild2, command=lambda: call_gabs(call_window))
-        btn3 = Button(call_window, image=bild3)
-        btn4 = Button(call_window, text="Close", command=call_window.destroy)
+        btn1 = Button(call_window, width=int(screen_width / 4), image=bild1, text="Sabrina anrufen", compound=TOP,
+                      font=my_font)
+        btn2 = Button(call_window, width=int(screen_width / 4), image=bild2, text="Gabriel anrufen", compound=TOP,
+                      font=my_font)
+        btn3 = Button(call_window, width=int(screen_width / 4), image=bild3, text="Krankenschwester anrufen",
+                      compound=TOP, font=my_font)
+        btn4 = Button(call_window, width=int(screen_width / 4), bg="#fa7070", text="Close", command=call_window.destroy,
+                      font=my_font)
 
         #Something about garbage collection... Doesnt work otherwise. Yey.
         btn1.image = bild1
         btn2.image = bild2
         btn3.image = bild3
 
-
-
-
-        btn1.grid(row=3, column=1)
-        btn2.grid(row=3, column=3)
-        btn3.grid(row=3, column=5)
-        btn4.grid(row=3, column=7)
-
+        btn1.pack(side=LEFT, fill=BOTH, expand=1)
+        btn2.pack(side=LEFT, fill=BOTH, expand=1)
+        btn3.pack(side=LEFT, fill=BOTH, expand=1)
+        btn4.pack(side=LEFT, fill=BOTH, expand=1)
 
     def clicked_sad(self, update_window):
         global update_mood

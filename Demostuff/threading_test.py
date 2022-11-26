@@ -9,6 +9,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
+#from selenium.common.exceptions import TimeOutException
 
 from telegram import Update
 import telegram
@@ -109,32 +110,35 @@ def start_call():
     
     # wait 2min30secs for second person to join the call
     try:
-        WebDriverWait(driver, 150).until(
+        WebDriverWait(driver, 30).until(
         expected_conditions.presence_of_element_located((By.CLASS_NAME, 'stage-participant-label')))
-        print("connected")
         connected = 1
     except: 
+        connected = 0
         print("timed out!")
-    finally:
-        call_connect.destroy()
-        print (connected)
-    
-    # for x in range(20):
-        # print(str(x) + " Seconds")
-        # time.sleep(1)
-    print("before if")
+
     
     
     if connected == 1:
-        print("In if")
-        #while True:
-            #try:
-                # except NoSuchElementException
-                # (By.CLASS_NAME, 'stage-participant-label'))
-            #time.sleep(5)
-            #print("in while")
+        call_connect.destroy()
+        print("connected")
+        while True:
+            try:
+                WebDriverWait(driver, 3).until(
+                expected_conditions.presence_of_element_located((By.CLASS_NAME, 'stage-participant-label')))
+            except:  
+                print("call ended")
+                driver.close()
+                connected = 0
+                break
+            time.sleep(5)
     else:
+        print("no connection established")
+        call_connect.config(bg="red")
         driver.close()
+        time.sleep(20)
+        call_connect.destroy()
+    
 
 def start_bot():
 
@@ -191,13 +195,13 @@ class TkinterWindow(threading.Thread):
         update_window.title("CareHub")
         update_window.attributes("-fullscreen", True)
         update_window.focus_set()
-        btn_happy = Button(update_window, text="Am Happy :)!", bg="#5cfac3", height=50, width=75,
+        btn_happy = Button(update_window, text="Am Happy :)!", bg="#5cfac3", 
                            command=lambda: self.clicked_happy(update_window))
-        btn_happy.pack(side='right')
+        btn_happy.pack(side='right', fill=X)
 
-        btn_sad = Button(update_window, text="Am Sad :(!", bg="#fa7070", height=50, width=75,
+        btn_sad = Button(update_window, text="Am Sad :(!", bg="#fa7070",
                          command=lambda: self.clicked_sad(update_window))
-        btn_sad.pack(side='left')
+        btn_sad.pack(side='left', fill=X)
 
         return update_mood
     

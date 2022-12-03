@@ -1,42 +1,44 @@
-import logging
-import tkinter_gui
+#Telegram
 from telegram import Update
+import telegram
 from telegram.ext import filters, MessageHandler, ApplicationBuilder, CommandHandler, ContextTypes
-from telegram.ext import CommandHandler
 
-from threading import Thread
+#Standard
+import logging
+import secrets
+import asyncio
+import time
+import threading
 
-# Global Variables
-# Todo: Make this safer!
-APItoken = "5597776676:AAG9mMM2BhWv9y10CQ3ooDaVhokWo3cg9fo"
+import cfg
+import tkinter_gui
+import browser_and_calling
 
-update_mood = 0
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
 
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print("message: ", update.message.chat_id, "effictive_chat: ", update.effective_chat.id)
 
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=
-    "/update To force an update on the users screen \n" +
-    "/show_pictures To view all the pictures currently on the frame \n" +
-    "or reply to this message with a picture to add it to the digital frame!")
-
+    await context.bot.send_message(chat_id=update.effective_chat.id,
+                                   text="/update To force an update on the users screen \n" +
+                                        "/show_pictures To view all the pictures currently on the frame \n" +
+                                        "or reply to this message with a picture to add it to the digital frame!")
 
 async def update_pls(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    global update_mood
+    global update_mood, user1_id, user2_id
 
     # chat_id=update.effective_chat.id,
     await context.bot.send_message(chat_id=update.effective_chat.id,
                                    text="Sending update request to CareHub! Please wait for a response.")
 
-    update_mood = tkinter_window.draw_window_thread()
+    update_mood = gui.draw_window_thread()
 
-    while(update_mood == 0):
+    #TODO: This while is needs to be changed.
+    while update_mood == 0:
         True
     if update_mood == 1:
         update_answer = "USER IS HAPPY! :)"
@@ -50,16 +52,40 @@ async def update_pls(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=update_answer)
 
 
-def start_bot():
-    application = ApplicationBuilder().token(APItoken).build()
+def call_user(user_index):
+    success = asyncio.run(send_call_notification(user_index))
+
+    if success == 1:
+        browser_thread = threading.Thread(target=browser_and_calling.connect_call)
+        browser_thread.start()
+
+        time.sleep(5)
+        gui.draw_wait_window()
+        cfg.choose_user_to_call_windows.destroy()
+
+
+
+#TODO: Structure of this call must be changed and optimized.
+async def send_call_notification(user_index):
+
+    generated_URL = "https://meet.jit.si/" + secrets.token_urlsafe()
+    cfg.url = generated_URL
+
+    await telegram.Bot(cfg.APItoken).sendMessage(chat_id=cfg.user_id_list[user_index], text="Hello, i'd like to video chat with you!")
+    if await telegram.Bot(cfg.APItoken).sendMessage(chat_id=cfg.user_id_list[user_index], text=cfg.url):
+        print("nachricht gesendet")
+        return 1
+
+
+
+if __name__ == '__main__':
+    application = ApplicationBuilder().token(cfg.APItoken).build()
     update_handler = CommandHandler('update', update_pls)
     start_handler = CommandHandler('start', start)
 
     application.add_handler(start_handler)
     application.add_handler(update_handler)
+
+    gui = tkinter_gui.TkinterWindow
+
     application.run_polling()
-
-if __name__ == '__main__':
-
-    tkinter_window = tkinter_gui.TkinterWindow()
-    start_bot()

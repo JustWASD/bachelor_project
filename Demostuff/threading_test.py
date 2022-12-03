@@ -1,8 +1,12 @@
+#Standard
 import logging
 import secrets
 import asyncio
 import time
+import threading
 
+
+#Selenium
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
@@ -10,20 +14,20 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 
-
-from telegram import Update
-import telegram
-from telegram.ext import filters, MessageHandler, ApplicationBuilder, CommandHandler, ContextTypes
+#Tkinter and Pillow
 from tkinter import *
 import tkinter.font as font
 from PIL import Image, ImageTk
 
+#Telegram
+from telegram import Update
+import telegram
+from telegram.ext import filters, MessageHandler, ApplicationBuilder, CommandHandler, ContextTypes
 
-import threading
 
 # Global Variables
-# Todo: Make this safer!
 APItoken = "5597776676:AAG9mMM2BhWv9y10CQ3ooDaVhokWo3cg9fo"
+user_id = [927737771, 177508822]
 
 my_font = " "
 update_mood = 0
@@ -32,7 +36,7 @@ sent_msg = 0
 url = " "
 call_connect = " "
 
-user_id = [927737771, 177508822]
+
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -58,6 +62,7 @@ async def update_pls(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     update_mood = tkinter_window.draw_window_thread()
 
+    #TODO: This while is needs to be changed.
     while update_mood == 0:
         True
     if update_mood == 1:
@@ -71,13 +76,13 @@ async def update_pls(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await context.bot.send_message(chat_id=update.effective_chat.id, text=update_answer)
 
+#TODO: Structure of this call must be changed and optimized.
 async def call(user):
 
     global user_id, url
 
     generated_URL = "https://meet.jit.si/" + secrets.token_urlsafe()
     url = generated_URL
-
 
     await telegram.Bot(APItoken).sendMessage(chat_id=user_id[user], text="Hello, i'd like to video chat with you!")
     if await telegram.Bot(APItoken).sendMessage(chat_id=user_id[user], text=generated_URL):
@@ -145,7 +150,6 @@ def start_bot():
     application = ApplicationBuilder().token(APItoken).build()
     update_handler = CommandHandler('update', update_pls)
     start_handler = CommandHandler('start', start)
-
 
     application.add_handler(start_handler)
     application.add_handler(update_handler)

@@ -115,7 +115,7 @@ class TkinterWindow(threading.Thread):
                             font=my_font)
         call_user2 = Button(cfg.choose_user_to_call_windows, width=int(screen_width / 4),
                             image=bild2, text="Gabriel anrufen", compound=TOP,
-                            font=my_font, command=lambda: call_user(0, self))
+                            font=my_font, command=lambda: call_user(0))
         call_user3 = Button(cfg.choose_user_to_call_windows, width=int(screen_width / 4),
                             image=bild3, text="Krankenschwester\nanrufen",
                             compound=TOP, font=my_font)

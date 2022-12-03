@@ -52,7 +52,7 @@ async def update_pls(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=update_answer)
 
 
-def call_user(user_index, gui):
+def call_user(user_index):
     
     
     success = asyncio.run(send_call_notification(user_index))
@@ -61,7 +61,7 @@ def call_user(user_index, gui):
         browser_thread = threading.Thread(target=browser_and_calling.start_call)
         browser_thread.start()
         time.sleep(5)
-        tkinter_gui.TkinterWindow.draw_wait_window(gui)
+        gui.draw_wait_window()
         cfg.choose_user_to_call_windows.destroy()
     
 

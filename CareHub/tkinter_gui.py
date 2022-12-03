@@ -8,7 +8,8 @@ import threading
 import cfg
 from main import call_user
 
-
+#global windows
+choose_user_to_call_windows = " "
 
 class TkinterWindow(threading.Thread):
 
@@ -78,6 +79,7 @@ class TkinterWindow(threading.Thread):
     
 
     def draw_call(self):
+       
         bild1 = Image.open("Images_and_Icons/Sabi.jpg")
         bild2 = Image.open("Images_and_Icons/Gabs.jpg")
         bild3 = Image.open("Images_and_Icons/Dawg.jpg")
@@ -108,7 +110,7 @@ class TkinterWindow(threading.Thread):
                             font=my_font)
         call_user2 = Button(cfg.choose_user_to_call_windows, width=int(screen_width / 4),
                             image=bild2, text="Gabriel anrufen", compound=TOP,
-                            font=my_font, command=lambda: call_user(0))
+                            font=my_font, command=lambda: call_user(self, 0))
         call_user3 = Button(cfg.choose_user_to_call_windows, width=int(screen_width / 4),
                             image=bild3, text="Krankenschwester\nanrufen",
                             compound=TOP, font=my_font)
@@ -137,12 +139,16 @@ class TkinterWindow(threading.Thread):
         cfg.update_mood = 1
         update_window.destroy()
         
-def draw_wait_window():
-        cfg.wait_for_connect_window = Tk()
+    def draw_wait_window(self):
+        cfg.wait_for_connect_window = Toplevel(self.root)
         cfg.wait_for_connect_window.title("Anruf")
         cfg.wait_for_connect_window.attributes("-fullscreen", True)
         cfg.wait_for_connect_window.focus_set()
         cfg.wait_for_connect_window.config(bg="green")
         label1 = Label(cfg.wait_for_connect_window, text="Bitte warten")
         label1.pack()
-        cfg.wait_for_connect_window.mainloop()
+        print("window closed?")
+        
+
+
+

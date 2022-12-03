@@ -52,18 +52,25 @@ async def update_pls(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=update_answer)
 
 
-def call_user(user_index):
+def call_user(instance, user_index):
     
     
     success = asyncio.run(send_call_notification(user_index))
+    instance.draw_wait_window()
 
     if success == 1:
+        success = 0
         browser_thread = threading.Thread(target=browser_and_calling.start_call)
         browser_thread.start()
         time.sleep(5)
-        wait_thread = threading.Thread(target=tkinter_gui.draw_wait_window)
-        wait_thread.start()
         cfg.choose_user_to_call_windows.destroy()
+        instance.draw_wait_window()
+        while cfg.call_connected == 0:
+            True
+        print("waiting window destroyed!")
+        cfg.wait_for_connect_window.destroy()
+        
+        
     
 
 #TODO: Structure of this call must be changed and optimized.

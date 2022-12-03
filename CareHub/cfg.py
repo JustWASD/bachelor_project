@@ -15,3 +15,4 @@ url = " "
 
 #globals
 update_mood = 0
+call_connected = 0

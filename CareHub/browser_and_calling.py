@@ -41,14 +41,15 @@ def start_call():
     try:
         WebDriverWait(driver, 150).until(
             expected_conditions.presence_of_element_located((By.CLASS_NAME, 'stage-participant-label')))
-        connected = 1
+        cfg.call_connected = 1
     except:
-        connected = 0
+        cfg.call_connected = 0
         print("timed out!")
 
-    if connected == 1:
-        cfg.wait_for_connect_window.destroy()
+    if cfg.call_connected == 1:
         print("connected")
+        
+        
         while True:
             try:
                 WebDriverWait(driver, 3).until(
@@ -56,7 +57,7 @@ def start_call():
             except:
                 print("call ended")
                 driver.close()
-                connected = 0
+                cfg.call_connected = 0
                 break
             time.sleep(5)
     else:

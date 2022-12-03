@@ -61,7 +61,8 @@ def call_user(user_index):
         browser_thread = threading.Thread(target=browser_and_calling.start_call)
         browser_thread.start()
         time.sleep(5)
-        gui.draw_wait_window()
+        wait_thread = threading.Thread(target=tkinter_gui.draw_wait_window)
+        wait_thread.start()
         cfg.choose_user_to_call_windows.destroy()
     
 

@@ -75,14 +75,7 @@ class TkinterWindow(threading.Thread):
 
         return cfg.update_mood
 
-    def draw_wait_window(self):
-        cfg.choose_user_to_call_windows = Toplevel(self.root)
-        cfg.choose_user_to_call_windows.title("Anruf")
-        cfg.choose_user_to_call_windows.attributes("-fullscreen", True)
-        cfg.choose_user_to_call_windows.focus_set()
-        cfg.choose_user_to_call_windows.config(bg="green")
-        label1 = Label(cfg.choose_user_to_call_windows, text="Bitte warten")
-        label1.pack()
+    
 
     def draw_call(self):
         bild1 = Image.open("Images_and_Icons/Sabi.jpg")
@@ -143,3 +136,13 @@ class TkinterWindow(threading.Thread):
         print("Happy Button was clicked")
         cfg.update_mood = 1
         update_window.destroy()
+        
+def draw_wait_window():
+        cfg.wait_for_connect_window = Tk()
+        cfg.wait_for_connect_window.title("Anruf")
+        cfg.wait_for_connect_window.attributes("-fullscreen", True)
+        cfg.wait_for_connect_window.focus_set()
+        cfg.wait_for_connect_window.config(bg="green")
+        label1 = Label(cfg.wait_for_connect_window, text="Bitte warten")
+        label1.pack()
+        cfg.wait_for_connect_window.mainloop()

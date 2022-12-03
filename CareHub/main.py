@@ -86,6 +86,6 @@ if __name__ == '__main__':
     application.add_handler(start_handler)
     application.add_handler(update_handler)
 
-    gui = tkinter_gui.TkinterWindow
+    gui = tkinter_gui.TkinterWindow()
 
     application.run_polling()

@@ -66,9 +66,9 @@ class TkinterWindow(threading.Thread):
         my_font = font.Font(size=40, weight="bold")
 
         btn_happy = Button(update_window, width=15, image=happy_img, text="I Am Happy!", compound=TOP, bg="#5cfac3",
-                           font=my_font, command=lambda: clicked_happy(update_window))
+                           font=my_font, command=lambda: self.clicked_happy(update_window))
         btn_sad = Button(update_window, width=15, image=sad_img, text="I Am Sad!", bg="#fa7070", compound=TOP,
-                         font=my_font, command=lambda: clicked_sad(update_window))
+                         font=my_font, command=lambda: self.clicked_sad(update_window))
 
         # Something about garbage collection... Doesnt work otherwise. Yey.
         btn_happy.image = happy_img
@@ -134,16 +134,15 @@ class TkinterWindow(threading.Thread):
         call_user3.pack(side=LEFT, fill=BOTH, expand=1)
         close_button.pack(side=LEFT, fill=BOTH, expand=1)
 
+    def clicked_sad(self, update_window):
+        global update_mood
+        print("Sad Button was clicked")
+        update_mood = 2
+        update_window.destroy()
 
-def clicked_sad(update_window):
-    global update_mood
-    print("Sad Button was clicked")
-    update_mood = 2
-    update_window.destroy()
 
-
-def clicked_happy(update_window):
-    global update_mood
-    print("Happy Button was clicked")
-    update_mood = 1
-    update_window.destroy()
+    def clicked_happy(self, update_window):
+        global update_mood
+        print("Happy Button was clicked")
+        update_mood = 1
+        update_window.destroy()

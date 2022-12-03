@@ -106,13 +106,16 @@ class TkinterWindow(threading.Thread):
         bild1 = ImageTk.PhotoImage(bild1)
         bild2 = ImageTk.PhotoImage(bild2)
         bild3 = ImageTk.PhotoImage(bild3)
-
+        
+        print("is thread still kicking it?")
+        print(TkinterWindow.is_alive(self))
+        
         call_user1 = Button(cfg.choose_user_to_call_windows, width=int(screen_width / 4),
                             image=bild1, text="Sabrina anrufen", compound=TOP,
                             font=my_font)
         call_user2 = Button(cfg.choose_user_to_call_windows, width=int(screen_width / 4),
                             image=bild2, text="Gabriel anrufen", compound=TOP,
-                            font=my_font, command=lambda: call_user(2))
+                            font=my_font, command=lambda: call_user(0, self))
         call_user3 = Button(cfg.choose_user_to_call_windows, width=int(screen_width / 4),
                             image=bild3, text="Krankenschwester\nanrufen",
                             compound=TOP, font=my_font)

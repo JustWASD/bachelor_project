@@ -19,8 +19,7 @@ connected = 0
 #closes the "wait_for_connect_window" if a call was successfully established
 #or turns the windows red if it failed.
 def start_call():
-    global connected
-
+    
     chrome_options = Options()
     chrome_options.add_experimental_option("useAutomationExtension", False)
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])

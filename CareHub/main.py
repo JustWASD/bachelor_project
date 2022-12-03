@@ -52,18 +52,18 @@ async def update_pls(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=update_answer)
 
 
-def call_user(user_index):
+def call_user(user_index, gui):
+    
+    
     success = asyncio.run(send_call_notification(user_index))
 
     if success == 1:
-        browser_thread = threading.Thread(target=browser_and_calling.connect_call)
+        browser_thread = threading.Thread(target=browser_and_calling.start_call)
         browser_thread.start()
-
         time.sleep(5)
-        gui.draw_wait_window()
+        tkinter_gui.TkinterWindow.draw_wait_window(gui)
         cfg.choose_user_to_call_windows.destroy()
-
-
+    
 
 #TODO: Structure of this call must be changed and optimized.
 async def send_call_notification(user_index):
@@ -79,6 +79,7 @@ async def send_call_notification(user_index):
 
 
 if __name__ == '__main__':
+    
     application = ApplicationBuilder().token(cfg.APItoken).build()
     update_handler = CommandHandler('update', update_pls)
     start_handler = CommandHandler('start', start)

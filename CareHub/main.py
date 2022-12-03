@@ -29,23 +29,23 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                         "or reply to this message with a picture to add it to the digital frame!")
 
 async def update_pls(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    global update_mood, user1_id, user2_id
+
 
     # chat_id=update.effective_chat.id,
     await context.bot.send_message(chat_id=update.effective_chat.id,
                                    text="Sending update request to CareHub! Please wait for a response.")
 
-    update_mood = gui.draw_window_thread()
+    cfg.update_mood = gui.draw_window_thread()
 
     #TODO: This while is needs to be changed.
-    while update_mood == 0:
+    while cfg.update_mood == 0:
         True
-    if update_mood == 1:
+    if cfg.update_mood == 1:
         update_answer = "USER IS HAPPY! :)"
-        update_mood = 0
-    elif update_mood == 2:
+        cfg.update_mood = 0
+    elif cfg.update_mood == 2:
         update_answer = "USER IS SAD! :("
-        update_mood = 0
+        cfg.update_mood = 0
     else:
         update_answer = "Something went wrong..."
 

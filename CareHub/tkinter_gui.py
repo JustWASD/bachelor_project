@@ -9,8 +9,6 @@ import cfg
 from main import call_user
 
 
-update_mood = 0
-
 
 class TkinterWindow(threading.Thread):
 
@@ -46,8 +44,6 @@ class TkinterWindow(threading.Thread):
         self.root.mainloop()
 
     def draw_window_thread(self):
-        global update_mood
-
         update_window = Toplevel(self.root)
         update_window.title("CareHub")
         update_window.attributes("-fullscreen", True)
@@ -77,7 +73,7 @@ class TkinterWindow(threading.Thread):
         btn_happy.pack(side=RIGHT, fill=BOTH, expand=1, padx=5, pady=5)
         btn_sad.pack(side=LEFT, fill=BOTH, expand=1, padx=5, pady=5)
 
-        return update_mood
+        return cfg.update_mood
 
     def draw_wait_window(self):
         cfg.choose_user_to_call_windows = Toplevel(self.root)
@@ -135,14 +131,12 @@ class TkinterWindow(threading.Thread):
         close_button.pack(side=LEFT, fill=BOTH, expand=1)
 
     def clicked_sad(self, update_window):
-        global update_mood
         print("Sad Button was clicked")
-        update_mood = 2
+        cfg.update_mood = 2
         update_window.destroy()
 
 
     def clicked_happy(self, update_window):
-        global update_mood
         print("Happy Button was clicked")
-        update_mood = 1
+        cfg.update_mood = 1
         update_window.destroy()

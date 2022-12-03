@@ -32,7 +32,7 @@ class TkinterWindow(threading.Thread):
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
 
-        img = Image.open("Nasi.jpg")
+        img = Image.open("Images_and_Icons/Nasi.jpg")
         img.thumbnail((screen_width, screen_height))
 
         img = ImageTk.PhotoImage(img)
@@ -53,12 +53,12 @@ class TkinterWindow(threading.Thread):
         update_window.attributes("-fullscreen", True)
         update_window.focus_set()
 
-        happy_icon = Image.open("happy_icon.png")
+        happy_icon = Image.open("Images_and_Icons/happy_icon.png")
         happy_icon = happy_icon.resize((100, 100), Image.LANCZOS)
         # Convert the happy_icon to PhotoImage
         happy_img = ImageTk.PhotoImage(happy_icon)
 
-        sad_icon = Image.open("sad_icon.png")
+        sad_icon = Image.open("Images_and_Icons/sad_icon.png")
         sad_icon = sad_icon.resize((100, 100), Image.LANCZOS)
         # Convert the happy_icon to PhotoImage
         sad_img = ImageTk.PhotoImage(sad_icon)
@@ -89,9 +89,9 @@ class TkinterWindow(threading.Thread):
         label1.pack()
 
     def draw_call(self):
-        bild1 = Image.open("Sabi.jpg")
-        bild2 = Image.open("Gabs.jpg")
-        bild3 = Image.open("Dawg.jpg")
+        bild1 = Image.open("Images_and_Icons/Sabi.jpg")
+        bild2 = Image.open("Images_and_Icons/Gabs.jpg")
+        bild3 = Image.open("Images_and_Icons/Dawg.jpg")
 
         cfg.choose_user_to_call_windows = Toplevel(self.root)
         cfg.choose_user_to_call_windows.title("Video Telefonat")

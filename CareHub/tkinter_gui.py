@@ -1,4 +1,5 @@
 # Tkinter and Pillow
+import time
 from tkinter import *
 import tkinter.font as font
 from PIL import Image, ImageTk
@@ -6,10 +7,10 @@ from PIL import Image, ImageTk
 # Standard
 import threading
 import cfg
-from main import call_user
+import browser_and_calling
+from main import send_call_notification
+import asyncio
 
-#global windows
-choose_user_to_call_windows = " "
 
 class TkinterWindow(threading.Thread):
 
@@ -110,7 +111,7 @@ class TkinterWindow(threading.Thread):
                             font=my_font)
         call_user2 = Button(cfg.choose_user_to_call_windows, width=int(screen_width / 4),
                             image=bild2, text="Gabriel anrufen", compound=TOP,
-                            font=my_font, command=lambda: call_user(self, 0))
+                            font=my_font, command=lambda: self.call_user(0))
         call_user3 = Button(cfg.choose_user_to_call_windows, width=int(screen_width / 4),
                             image=bild3, text="Krankenschwester\nanrufen",
                             compound=TOP, font=my_font)
@@ -138,7 +139,8 @@ class TkinterWindow(threading.Thread):
         print("Happy Button was clicked")
         cfg.update_mood = 1
         update_window.destroy()
-        
+
+
     def draw_wait_window(self):
         cfg.wait_for_connect_window = Toplevel(self.root)
         cfg.wait_for_connect_window.title("Anruf")
@@ -147,8 +149,20 @@ class TkinterWindow(threading.Thread):
         cfg.wait_for_connect_window.config(bg="green")
         label1 = Label(cfg.wait_for_connect_window, text="Bitte warten")
         label1.pack()
-        print("window closed?")
-        
+
+    def call_user(self, user_index):
+
+        success = asyncio.run(send_call_notification(user_index))
+
+        if success == 1:
+            success = 0
+            browser_thread = threading.Thread(target=browser_and_calling.start_call)
+            browser_thread.start()
+            time.sleep(5)
+            cfg.choose_user_to_call_windows.destroy()
+            self.draw_wait_window()
+
+
 
 
 

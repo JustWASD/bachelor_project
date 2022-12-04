@@ -39,7 +39,7 @@ def start_call():
 
     # wait 2min30secs for second person to join the call
     try:
-        WebDriverWait(driver, 150).until(
+        WebDriverWait(driver, 20).until(
             expected_conditions.presence_of_element_located((By.CLASS_NAME, 'stage-participant-label')))
         cfg.call_connected = 1
     except:
@@ -48,7 +48,7 @@ def start_call():
 
     if cfg.call_connected == 1:
         print("connected")
-        
+        cfg.wait_for_connect_window.destroy()
         
         while True:
             try:

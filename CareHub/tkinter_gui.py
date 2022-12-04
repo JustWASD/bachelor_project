@@ -158,13 +158,12 @@ class TkinterWindow(threading.Thread):
 
         if sent_call_notification == 1:
             #sent_call_notification = 0
-            browser_thread = threading.Thread(target=browser_and_calling.start_call)
-            call_success = browser_thread.start()
-            #time.sleep(5)
-            self.draw_wait_window()
+            browser_thread = threading.Thread(target=browser_and_calling.start_call(user_index))
+            browser_thread.start()
+            time.sleep(5)
             cfg.choose_user_to_call_windows.destroy()
-            if call_success == 2:
-                asyncio.run(send_call_notification(user_index))
+            self.draw_wait_window()
+
 
 
 

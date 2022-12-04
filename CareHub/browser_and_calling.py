@@ -10,13 +10,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 
+from main import send_call_failed_notification
+import asyncio
 
 connected = 0
 
 #opens a browser window and hides it via the "wait_for_connect_window"
 #closes the "wait_for_connect_window" if a call was successfully established
 #or turns the windows red if it failed.
-def start_call():
+def start_call(user_index):
     
     chrome_options = Options()
     chrome_options.add_experimental_option("useAutomationExtension", False)
@@ -63,7 +65,8 @@ def start_call():
         cfg.wait_for_connect_window.config(bg="red")
         driver.close()
         #20 seconds of error message
+        asyncio.run(send_call_failed_notification(user_index))
         time.sleep(20)
         cfg.wait_for_connect_window.destroy()
-        return 2
+
 

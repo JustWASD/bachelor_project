@@ -6,9 +6,6 @@ from telegram.ext import filters, MessageHandler, ApplicationBuilder, CommandHan
 #Standard
 import logging
 import secrets
-import asyncio
-import time
-import threading
 
 import cfg
 import tkinter_gui
@@ -23,55 +20,67 @@ logging.basicConfig(
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print("message: ", update.message.chat_id, "effictive_chat: ", update.effective_chat.id)
 
-    await context.bot.send_message(chat_id=update.effective_chat.id,
-                                   text="/update To force an update on the users screen \n" +
-                                        "/show_pictures To view all the pictures currently on the frame \n" +
-                                        "or reply to this message with a picture to add it to the digital frame!")
+    if cfg.user_id_list.count(update.effective_chat.id) > 0:
+        await context.bot.send_message(chat_id=update.effective_chat.id,
+                                       text="Hallo! Hier erhalten Sie Benachrichtigungen"
+                                            "von CareHub.\n"
+                                            "Schicken Sie /update in den Chat um CareHub nach"
+                                            "einem Stimmungs-Update zu fragen!")
+    else:
+        print("Unknown user tried to use the bot!")
+        await context.bot.send_message(chat_id=update.effective_chat.id,
+                                       text="You are not an authorized user!")
+
+
 
 async def update_pls(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
+    if cfg.user_id_list.count(update.effective_chat.id) > 0:
+        await context.bot.send_message(chat_id=update.effective_chat.id,
+                                       text="Sending update request to CareHub! Please wait for a response.")
 
-    # chat_id=update.effective_chat.id,
-    await context.bot.send_message(chat_id=update.effective_chat.id,
-                                   text="Sending update request to CareHub! Please wait for a response.")
+        cfg.update_mood = gui.draw_window_thread()
 
-    cfg.update_mood = gui.draw_window_thread()
+        #TODO: This while is blocking and waiting for a response.
+        # A better solution could be implemented but it is working for now.
+        while cfg.update_mood == 0:
+            True
+        if cfg.update_mood == 1:
+            update_answer = "CareHub Rückmeldung: \"Mir geht es gut! :)\""
+            cfg.update_mood = 0
+        elif cfg.update_mood == 2:
+            update_answer = "CareHub Rückmeldung: \"Mir geht es leider nicht gut! :(\""
+            cfg.update_mood = 0
+        else:
+            update_answer = "Irgendetwas hat nicht funktioniert!"
+            print("Update broke...?!")
 
-    #TODO: This while is needs to be changed.
-    while cfg.update_mood == 0:
-        True
-    if cfg.update_mood == 1:
-        update_answer = "USER IS HAPPY! :)"
-        cfg.update_mood = 0
-    elif cfg.update_mood == 2:
-        update_answer = "USER IS SAD! :("
-        cfg.update_mood = 0
+        await context.bot.send_message(chat_id=update.effective_chat.id, text=update_answer)
     else:
-        update_answer = "Something went wrong..."
+        print("Unknown user tried to use the bot!")
+        await context.bot.send_message(chat_id=update.effective_chat.id,
+                                       text="You are not an authorized user!")
 
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=update_answer)
 
-
-
-        
-        
-    
-
-#TODO: Structure of this call must be changed and optimized.
 async def send_call_notification(user_index):
 
     generated_URL = "https://meet.jit.si/" + secrets.token_urlsafe()
     cfg.url = generated_URL
 
-    await telegram.Bot(cfg.APItoken).sendMessage(chat_id=cfg.user_id_list[user_index], text="Hello, i'd like to video chat with you!")
+    await telegram.Bot(cfg.APItoken).sendMessage(chat_id=cfg.user_id_list[user_index],
+                                                 text="Hallo! Ich möchte gerne Videotelefonieren!\n"
+                                                      "Du findest mich unter folgendem Link:")
     if await telegram.Bot(cfg.APItoken).sendMessage(chat_id=cfg.user_id_list[user_index], text=cfg.url):
-        print("nachricht gesendet")
+        print("Call notification sent!")
         return 1
 
 async def send_call_failed_notification(user_index):
 
-    await telegram.Bot(cfg.APItoken).sendMessage(chat_id=cfg.user_id_list[user_index], text="The video call timed out! Please respond!")
-    print("call fehlgeschlagen gesendet")
+    await telegram.Bot(cfg.APItoken).sendMessage(chat_id=cfg.user_id_list[user_index],
+                                                 text="Es ist leider zu lange Zeit vergangen und "
+                                                      "der Videocall wurde beendet!\n"
+                                                      "Meld dich bitte bei Gelegenheit!")
+    print("Call Failed notification sent!")
 
 
 

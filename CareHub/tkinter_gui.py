@@ -150,17 +150,21 @@ class TkinterWindow(threading.Thread):
         label1 = Label(cfg.wait_for_connect_window, text="Bitte warten")
         label1.pack()
 
+    #This function was originally in main but caused runtime errors (Tkinter GUI would freeze). I'm not sure if here
+    # is the best place but it's currently working so whatever.
     def call_user(self, user_index):
 
-        success = asyncio.run(send_call_notification(user_index))
+        sent_call_notification = asyncio.run(send_call_notification(user_index))
 
-        if success == 1:
-            success = 0
+        if sent_call_notification == 1:
+            #sent_call_notification = 0
             browser_thread = threading.Thread(target=browser_and_calling.start_call)
-            browser_thread.start()
-            time.sleep(5)
-            cfg.choose_user_to_call_windows.destroy()
+            call_success = browser_thread.start()
+            #time.sleep(5)
             self.draw_wait_window()
+            cfg.choose_user_to_call_windows.destroy()
+            if call_success == 2:
+                asyncio.run(send_call_notification(user_index))
 
 
 

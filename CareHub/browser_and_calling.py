@@ -1,7 +1,5 @@
 #Standard
 import time
-import threading
-import tkinter_gui
 import cfg
 
 #Selenium
@@ -34,12 +32,12 @@ def start_call():
     driver.find_element(By.CLASS_NAME, 'chrome-extension-banner__close-container').click()
 
     # logs in
-    login.send_keys("Gast")
+    login.send_keys("CareHub")
     login.send_keys(Keys.RETURN)
 
     # wait 2min30secs for second person to join the call
     try:
-        WebDriverWait(driver, 20).until(
+        WebDriverWait(driver, 150).until(
             expected_conditions.presence_of_element_located((By.CLASS_NAME, 'stage-participant-label')))
         cfg.call_connected = 1
     except:
@@ -67,4 +65,5 @@ def start_call():
         #20 seconds of error message
         time.sleep(20)
         cfg.wait_for_connect_window.destroy()
+        return 2
 

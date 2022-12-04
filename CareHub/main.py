@@ -68,6 +68,11 @@ async def send_call_notification(user_index):
         print("nachricht gesendet")
         return 1
 
+async def send_call_failed_notification(user_index):
+
+    await telegram.Bot(cfg.APItoken).sendMessage(chat_id=cfg.user_id_list[user_index], text="The video call timed out! Please respond!")
+    print("call fehlgeschlagen gesendet")
+
 
 
 if __name__ == '__main__':

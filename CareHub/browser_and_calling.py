@@ -39,7 +39,7 @@ def start_call(user_index):
 
     # wait 2min30secs for second person to join the call
     try:
-        WebDriverWait(driver, 20).until(
+        WebDriverWait(driver, 10).until(
             expected_conditions.presence_of_element_located((By.CLASS_NAME, 'stage-participant-label')))
         cfg.call_connected = 1
     except:
@@ -63,6 +63,7 @@ def start_call(user_index):
     else:
         print("no connection established")
         cfg.wait_for_connect_window.config(bg="red")
+        cfg.waiting_label.config(width=50, text="Leider konnte kein Anruf aufgebaut werden...\nEs wurde um einen Rückruf gebeten.")
         driver.close()
         #20 seconds of error message
         asyncio.run(send_call_failed_notification(user_index))

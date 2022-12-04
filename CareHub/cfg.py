@@ -33,6 +33,7 @@ call_icons = []
 # global Tkinter windows
 wait_for_connect_window = " "
 choose_user_to_call_windows = " "
+waiting_label = " "
 
 # generated url used by multiple sources
 url = " "

@@ -57,29 +57,13 @@ class TkinterWindow(threading.Thread):
             img = ImageTk.PhotoImage(img)
             cfg.tkinter_icons.append(img)
 
-        """
-        happy_icon = Image.open("Images_and_Icons/happy_icon.png")
-        happy_icon = happy_icon.resize((100, 100), Image.LANCZOS)
-        # Convert the happy_icon to PhotoImage
-        happy_img = ImageTk.PhotoImage(happy_icon)
+        my_font = font.Font(size=30, weight="bold")
 
-        sad_icon = Image.open("Images_and_Icons/sad_icon.png")
-        sad_icon = sad_icon.resize((100, 100), Image.LANCZOS)
-        # Convert the happy_icon to PhotoImage
-        sad_img = ImageTk.PhotoImage(sad_icon)
-        """
-        my_font = font.Font(size=40, weight="bold")
-
-        btn_happy = Button(update_window, width=15, image=cfg.tkinter_icons[0], text="Mir geht es gut!", compound=TOP, bg="#5cfac3",
+        btn_happy = Button(update_window, width=15, image=cfg.tkinter_icons[0], text="Mir geht\n es gut!", compound=TOP, bg="#5cfac3",
                            font=my_font, command=lambda: self.clicked_happy(update_window))
-        btn_sad = Button(update_window, width=15, image=cfg.tkinter_icons[1], text="Mir geht es nicht gut...", bg="#fa7070", compound=TOP,
+        btn_sad = Button(update_window, width=15, image=cfg.tkinter_icons[1], text="Mir geht\n es nicht gut...", bg="#fa7070", compound=TOP,
                          font=my_font, command=lambda: self.clicked_sad(update_window))
 
-        """
-        Something about garbage collection... Doesnt work otherwise. Yey.
-        #btn_happy.image = happy_img
-        #btn_sad.image = sad_img
-        """
         btn_happy.pack(side=RIGHT, fill=BOTH, expand=1, padx=5, pady=5)
         btn_sad.pack(side=LEFT, fill=BOTH, expand=1, padx=5, pady=5)
 
@@ -104,20 +88,6 @@ class TkinterWindow(threading.Thread):
             img.thumbnail((int(screen_width / 2), int(screen_height / 2)))
             img = ImageTk.PhotoImage(img)
             cfg.call_icons.append(img)
-        """
-        bild1 = Image.open("Images_and_Icons/Sabi.jpg")
-        bild2 = Image.open("Images_and_Icons/Gabs.jpg")
-        bild3 = Image.open("Images_and_Icons/Dawg.jpg")
-        
-        bild1.thumbnail((int(screen_width / 2), int(screen_height / 2)))
-        bild2.thumbnail((int(screen_width / 2), int(screen_height / 2)))
-        bild3.thumbnail((int(screen_width / 2), int(screen_height / 2)))
-
-        bild1 = ImageTk.PhotoImage(bild1)
-        bild2 = ImageTk.PhotoImage(bild2)
-        bild3 = ImageTk.PhotoImage(bild3)
-        """
-
         
         call_user1 = Button(cfg.choose_user_to_call_windows, width=int(screen_width / 4),
                             image=cfg.call_icons[1], text="Sabrina anrufen", compound=TOP,
@@ -132,12 +102,6 @@ class TkinterWindow(threading.Thread):
                               command=cfg.choose_user_to_call_windows.destroy,
                               font=my_font)
 
-        """
-        Something about garbage collection... Doesnt work otherwise. Yey.
-        call_user1.image = bild1
-        call_user2.image = bild2
-        call_user3.image = bild3
-        """
         call_user1.pack(side=LEFT, fill=BOTH, expand=1)
         call_user2.pack(side=LEFT, fill=BOTH, expand=1)
         call_user3.pack(side=LEFT, fill=BOTH, expand=1)
@@ -163,8 +127,8 @@ class TkinterWindow(threading.Thread):
         cfg.wait_for_connect_window.focus_set()
         cfg.wait_for_connect_window.config(bg="green")
         my_font = font.Font(size=14, weight="bold")
-        label1 = Label(cfg.wait_for_connect_window, text="Bitte warten, Anruf wird aufgebaut", font=my_font, width=30)
-        label1.pack(fill=NONE, expand=True)
+        cfg.waiting_label = Label(cfg.wait_for_connect_window, text="Bitte warten, Anruf wird aufgebaut", font=my_font, width=30)
+        cfg.waiting_label.pack(fill=NONE, expand=True)
 
     #This function was originally in main but caused runtime errors (Tkinter GUI would freeze). I'm not sure if here
     # is the best place but it's currently working so whatever.

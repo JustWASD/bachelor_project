@@ -13,6 +13,8 @@ from selenium.webdriver.support import expected_conditions
 from main import send_call_failed_notification
 import asyncio
 
+from playsound import playsound
+
 connected = 0
 
 #opens a browser window and hides it via the "wait_for_connect_window"
@@ -28,7 +30,7 @@ def start_call(user_index):
 
     driver = webdriver.Chrome(options=chrome_options)
     driver.get(cfg.url)
-
+    playsound("sounds\call_connecting_audio.wav")
     time.sleep(4)
     login = driver.find_element(By.CLASS_NAME, 'field  ')
     driver.find_element(By.CLASS_NAME, 'chrome-extension-banner__close-container').click()

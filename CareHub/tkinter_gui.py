@@ -7,9 +7,10 @@ from PIL import Image, ImageTk
 # Standard
 import threading
 import cfg
-import browser_and_calling
+#import browser_and_calling
 from main import send_call_notification
 import asyncio
+from playsound import playsound
 
 
 class TkinterWindow(threading.Thread):
@@ -125,10 +126,13 @@ class TkinterWindow(threading.Thread):
         cfg.wait_for_connect_window.title("Anruf")
         cfg.wait_for_connect_window.attributes("-fullscreen", True)
         cfg.wait_for_connect_window.focus_set()
+
         cfg.wait_for_connect_window.config(bg="green")
         my_font = font.Font(size=14, weight="bold")
+
         cfg.waiting_label = Label(cfg.wait_for_connect_window, text="Bitte warten, Anruf wird aufgebaut", font=my_font, width=30)
         cfg.waiting_label.pack(fill=NONE, expand=True)
+
 
     #This function was originally in main but caused runtime errors (Tkinter GUI would freeze). I'm not sure if here
     # is the best place but it's currently working so whatever.
@@ -138,12 +142,12 @@ class TkinterWindow(threading.Thread):
 
         if sent_call_notification == 1:
             sent_call_notification = 0
-            browser_thread = threading.Thread(target=browser_and_calling.start_call, args=[user_index])
-            browser_thread.start()
+            #browser_thread = threading.Thread(target=browser_and_calling.start_call, args=[user_index])
+            #browser_thread.start()
             time.sleep(3)
             self.draw_wait_window()
             cfg.choose_user_to_call_windows.destroy()
-            
+
 
 
 

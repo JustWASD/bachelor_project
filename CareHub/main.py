@@ -7,10 +7,16 @@ from telegram.ext import filters, MessageHandler, ApplicationBuilder, CommandHan
 import logging
 import secrets
 
+
 import cfg
 import tkinter_gui
-import browser_and_calling
+#import browser_and_calling
 
+#Schedular
+import asyncio
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.combining import OrTrigger
+from apscheduler.triggers.cron import CronTrigger
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -31,13 +37,40 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(chat_id=update.effective_chat.id,
                                        text="You are not an authorized user!")
 
+def call_scheduled_update():
+    asyncio.run(scheduled_update())
+
+async def scheduled_update():
+    await telegram.Bot(cfg.APItoken).sendMessage(chat_id=cfg.user_id_list[2], #group_chat ID
+                                                 text="Ein zeitliches Update wurde an CareHub geschickt! "
+                                                      "Bitte warten Sie bis die Antowort kommt.")
+    cfg.update_mood = gui.draw_window_thread()
+
+    # TODO: This while is blocking and waiting for a response.
+    # A better solution could be implemented but it is working for now.
+    while cfg.update_mood == 0:
+        True
+    if cfg.update_mood == 1:
+        update_answer = "CareHub Rückmeldung: \"Mir geht es gut! :)\""
+        cfg.update_mood = 0
+    elif cfg.update_mood == 2:
+        update_answer = "CareHub Rückmeldung: \"Mir geht es leider nicht gut! :(\""
+        cfg.update_mood = 0
+    else:
+        update_answer = "Irgendetwas hat nicht funktioniert!"
+        print("Update broke...?!")
+
+    await telegram.Bot(cfg.APItoken).sendMessage(chat_id=cfg.user_id_list[2],  # group_chat ID
+                                                 text=update_answer)
 
 
 async def update_pls(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
+    #print(update)
+    #print(context)
     if cfg.user_id_list.count(update.effective_chat.id) > 0:
         await context.bot.send_message(chat_id=update.effective_chat.id,
-                                       text="Sending update request to CareHub! Please wait for a response.")
+                                       text="Ein Update wird an CareHub geschickt! Bitte warten Sie bis die Antowort kommt.")
 
         cfg.update_mood = gui.draw_window_thread()
 
@@ -92,6 +125,15 @@ if __name__ == '__main__':
 
     application.add_handler(start_handler)
     application.add_handler(update_handler)
+
+    scheduler = BackgroundScheduler()
+
+    update_trigger = OrTrigger([CronTrigger(hour=8, minute=30),
+                                CronTrigger(hour=12, minute=0),
+                                CronTrigger(hour=16, minute=30)])
+
+    scheduler.add_job(call_scheduled_update, update_trigger)
+    scheduler.start()
 
     gui = tkinter_gui.TkinterWindow()
 

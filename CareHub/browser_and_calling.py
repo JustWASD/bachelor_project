@@ -67,6 +67,7 @@ def start_call(user_index):
         cfg.wait_for_connect_window.config(bg="red")
         cfg.waiting_label.config(width=50, text="Leider konnte kein Anruf aufgebaut werden...\nEs wurde um einen Rückruf gebeten.")
         driver.close()
+        playsound("sounds\call_timed_out.wav")
         #20 seconds of error message
         asyncio.run(send_call_failed_notification(user_index))
         time.sleep(20)

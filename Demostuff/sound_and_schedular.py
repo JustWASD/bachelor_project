@@ -48,7 +48,7 @@ while run==True:
 	str = input("Ask user for something.")
 	if (len(str)>1):
 		engine.say(str)
-		engine.save_to_file(str,str+".mp3")
+		engine.save_to_file(str,str+".wav")
 		engine.runAndWait()
 else:
 	run=False

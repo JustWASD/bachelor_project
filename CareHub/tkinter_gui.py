@@ -10,7 +10,6 @@ import cfg
 #import browser_and_calling
 from main import send_call_notification
 import asyncio
-from playsound import playsound
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
@@ -47,14 +46,15 @@ class TkinterWindow(threading.Thread):
         frame_picture.pack(fill=NONE, expand=True)
 
         tkinter_scheduler = BackgroundScheduler()
-        tkinter_scheduler.add_job(lambda: self.change_bkg(frame_picture), 'interval', seconds=10)
+        tkinter_scheduler.add_job(lambda: self.change_bkg(frame_picture), 'interval', seconds=8)
+        tkinter_scheduler.start()
         """Never close this mainloop"""
         self.root.mainloop()
 
     def change_bkg (self, frame_button):
         cfg.current_picture = cfg.current_picture + 1
         if cfg.current_picture == len(cfg.available_pictures):
-            cfg.current_picture == 0
+            cfg.current_picture = 0
         frame_button.config(image=cfg.frame_pictures[cfg.current_picture])
 
 
@@ -134,7 +134,7 @@ class TkinterWindow(threading.Thread):
 
 
 
-    def draw_wait_window(self):
+    def draw_wait_window(self, user):
         #TODO: Add voice and the picture.
         cfg.wait_for_connect_window = Toplevel(self.root)
         cfg.wait_for_connect_window.title("Anruf")
@@ -144,8 +144,11 @@ class TkinterWindow(threading.Thread):
         cfg.wait_for_connect_window.config(bg="green")
         my_font = font.Font(size=14, weight="bold")
 
+        called_user_picture = Label(cfg.wait_for_connect_window, image=cfg.call_icons[user])
         cfg.waiting_label = Label(cfg.wait_for_connect_window, text="Bitte warten, Anruf wird aufgebaut", font=my_font, width=30)
+        called_user_picture.pack(fill=NONE, expand=True)
         cfg.waiting_label.pack(fill=NONE, expand=True)
+
 
 
     #This function was originally in main but caused runtime errors (Tkinter GUI would freeze). I'm not sure if here
@@ -159,7 +162,7 @@ class TkinterWindow(threading.Thread):
             #browser_thread = threading.Thread(target=browser_and_calling.start_call, args=[user_index])
             #browser_thread.start()
             time.sleep(3)
-            self.draw_wait_window()
+            self.draw_wait_window(user_index)
             cfg.choose_user_to_call_windows.destroy()
 
 

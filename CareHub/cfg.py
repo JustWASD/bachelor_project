@@ -31,6 +31,7 @@ call_pictures = ["Images_and_Icons/Gabs.jpg",
 call_icons = []
 
 # global Tkinter windows
+# frame_picture = " "
 wait_for_connect_window = " "
 choose_user_to_call_windows = " "
 waiting_label = " "

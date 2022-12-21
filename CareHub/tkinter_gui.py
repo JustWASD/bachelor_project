@@ -7,7 +7,7 @@ from PIL import Image, ImageTk
 # Standard
 import threading
 import cfg
-#import browser_and_calling
+import browser_and_calling
 from main import send_call_notification
 import asyncio
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -46,7 +46,7 @@ class TkinterWindow(threading.Thread):
         frame_picture.pack(fill=NONE, expand=True)
 
         tkinter_scheduler = BackgroundScheduler()
-        tkinter_scheduler.add_job(lambda: self.change_bkg(frame_picture), 'interval', seconds=8)
+        tkinter_scheduler.add_job(lambda: self.change_bkg(frame_picture), 'interval', minutes=8)
         tkinter_scheduler.start()
         """Never close this mainloop"""
         self.root.mainloop()
@@ -159,8 +159,8 @@ class TkinterWindow(threading.Thread):
 
         if sent_call_notification == 1:
             sent_call_notification = 0
-            #browser_thread = threading.Thread(target=browser_and_calling.start_call, args=[user_index])
-            #browser_thread.start()
+            browser_thread = threading.Thread(target=browser_and_calling.start_call, args=[user_index])
+            browser_thread.start()
             time.sleep(3)
             self.draw_wait_window(user_index)
             cfg.choose_user_to_call_windows.destroy()

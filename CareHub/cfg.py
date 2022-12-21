@@ -19,7 +19,7 @@ available_pictures = ["Images_and_Icons/frame_pic1.jpg",
                       "Images_and_Icons/frame_pic2.jpg",
                       "Images_and_Icons/frame_pic3.jpg"]
 frame_pictures = []
-
+current_picture = 0
 
 icons = ["Images_and_Icons/happy_icon.png",
          "Images_and_Icons/sad_icon.png"]

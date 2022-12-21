@@ -11,6 +11,7 @@ import cfg
 from main import send_call_notification
 import asyncio
 from playsound import playsound
+from apscheduler.schedulers.background import BackgroundScheduler
 
 
 class TkinterWindow(threading.Thread):
@@ -18,6 +19,8 @@ class TkinterWindow(threading.Thread):
     # starts the thread
     def __init__(self):
         threading.Thread.__init__(self)
+
+
         self.start()
 
     def callback(self):
@@ -29,6 +32,7 @@ class TkinterWindow(threading.Thread):
         self.root.protocol("WM_DELETE_WINDOW", self.callback)
         self.root.title("CareHub")
         self.root.attributes("-fullscreen", True)
+
 
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
@@ -42,8 +46,17 @@ class TkinterWindow(threading.Thread):
         frame_picture = Button(self.root, image=cfg.frame_pictures[0], command=self.draw_call)
         frame_picture.pack(fill=NONE, expand=True)
 
+        tkinter_scheduler = BackgroundScheduler()
+        tkinter_scheduler.add_job(lambda: self.change_bkg(frame_picture), 'interval', seconds=10)
         """Never close this mainloop"""
         self.root.mainloop()
+
+    def change_bkg (self, frame_button):
+        cfg.current_picture = cfg.current_picture + 1
+        if cfg.current_picture == len(cfg.available_pictures):
+            cfg.current_picture == 0
+        frame_button.config(image=cfg.frame_pictures[cfg.current_picture])
+
 
     def draw_window_thread(self):
         update_window = Toplevel(self.root)
@@ -118,6 +131,7 @@ class TkinterWindow(threading.Thread):
         print("Happy Button was clicked")
         cfg.update_mood = 1
         update_window.destroy()
+
 
 
     def draw_wait_window(self):

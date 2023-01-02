@@ -18,11 +18,18 @@ To authorize a user you need to add the message_id to the list of authorized IDs
 Send /start to the newly generated bot and you will find the message of the user on the console. 
 ### Pictures
 Add all necessary pictures (pictures for the frame, user pictures and piktograms) to the folder and to the corresponding list (this will probably be changed in an future update)!
+### Linux [WIP]
+To make the UX as nice as possible, following settings must be taken into account: 
+* unclutter -idle 0 
+  This removes the mouse pointer
+* Panel
+  minimize when not in use. This hides the panel (aka Taskbar) when not in use. 
+All these setting are necessary to have a full screen experience of the CareHub interface. 
 
 
 ## Todo
-* Try-Catch for Network errors
-* Linux Interface: No taskbar, no mouse pointer, autostart of script. 
+* Try-Catch for Network errors [Maybe not even necassary. More investigation needed.]
+* Linux Interface: No taskbar, no mouse pointer, autostart of script. [WIP]
 
 
 ## Nice to haves...

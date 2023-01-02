@@ -74,9 +74,9 @@ class TkinterWindow(threading.Thread):
         my_font = font.Font(size=30, weight="bold")
 
         btn_happy = Button(update_window, width=15, image=cfg.tkinter_icons[0], text="Mir geht\n es gut!", compound=TOP, bg="#5cfac3",
-                           font=my_font, command=lambda: self.clicked_happy(update_window))
+                           font=my_font, activebackground="#5cfac3", command=lambda: self.clicked_happy(update_window))
         btn_sad = Button(update_window, width=15, image=cfg.tkinter_icons[1], text="Mir geht\n es nicht gut...", bg="#fa7070", compound=TOP,
-                         font=my_font, command=lambda: self.clicked_sad(update_window))
+                         font=my_font, activebackground="#fa7070", command=lambda: self.clicked_sad(update_window))
 
         btn_happy.pack(side=RIGHT, fill=BOTH, expand=1, padx=5, pady=5)
         btn_sad.pack(side=LEFT, fill=BOTH, expand=1, padx=5, pady=5)

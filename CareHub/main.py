@@ -43,7 +43,7 @@ def call_scheduled_update():
 async def scheduled_update():
     await telegram.Bot(cfg.APItoken).sendMessage(chat_id=cfg.user_id_list[2], #group_chat ID
                                                  text="Ein zeitliches Update wurde an CareHub geschickt! "
-                                                      "Bitte warten Sie bis die Antowort kommt.")
+                                                      "Bitte warten Sie bis die Antwort kommt.")
     cfg.update_mood = gui.draw_window_thread()
 
     # TODO: This while is blocking and waiting for a response.

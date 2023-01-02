@@ -17,7 +17,8 @@ But for now, you have to add pictures to the correct folder and add the name to 
 '''
 available_pictures = ["Images_and_Icons/frame_pic1.jpg",
                       "Images_and_Icons/frame_pic2.jpg",
-                      "Images_and_Icons/frame_pic3.jpg"]
+                      "Images_and_Icons/frame_pic3.jpg",
+                      "Images_and_Icons/frame_pic4.jpg"]
 frame_pictures = []
 current_picture = 0
 
@@ -27,7 +28,7 @@ tkinter_icons = []
 
 call_pictures = ["Images_and_Icons/Gabs.jpg",
                  "Images_and_Icons/Sabi.jpg",
-                 "Images_and_Icons/Dawg.jpg"]
+                 "Images_and_Icons/Gruppe.jpg"]
 call_icons = []
 
 # global Tkinter windows

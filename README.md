@@ -7,6 +7,8 @@
 * Selenium Python (https://github.com/SeleniumHQ/selenium) 
 * Tkinter (https://docs.python.org/3/library/tkinter.html)
 * Pillow (https://pillow.readthedocs.io/en/stable/)
+* Playsound (https://pypi.org/project/playsound/) + Linux needs GST (sudo apt install python3-gst-1.0)
+
 
 ## Setup (WIP)
 ### API Token
@@ -19,11 +21,9 @@ Add all necessary pictures (pictures for the frame, user pictures and piktograms
 
 
 ## Todo
-* Implement a sheduler for calling an update during the day and change the pictures in the frame.
-* Add more folders and automated updating for icons and pictures
-* Audio and more pictures/icons for the Tkinter GUI. 
-* Add a synthezised voice to the wait_window. 
-* "while mood_update == 0" waiting sucks. Basically, I need to wait for the button input but I dont want to be stuck. Errors: If, while waiting for the button, messages are sent, all of the fire at once after the button press
+* Try-Catch for Network errors
+* Linux Interface: No taskbar, no mouse pointer, autostart of script. 
+
 
 ## Nice to haves...
 * Adding pictures via the telegram bot
@@ -37,5 +37,6 @@ Add all necessary pictures (pictures for the frame, user pictures and piktograms
 * opening and closing multiple tkinter windows in fullscreen
 * simple security system via message_ids
 * having a screen inform the user that the call is being established
+* Implemented a sheduler for calling an update during the day and changing the pictures in the frame.
 * Progress of the whole project is approx.: 85%
 

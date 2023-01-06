@@ -6,7 +6,7 @@ from telegram.ext import filters, MessageHandler, ApplicationBuilder, CommandHan
 #Standard
 import logging
 import secrets
-
+import time
 
 import cfg
 import tkinter_gui
@@ -118,6 +118,8 @@ async def send_call_failed_notification(user_index):
 
 
 if __name__ == '__main__':
+    
+    time.sleep(10)
     
     application = ApplicationBuilder().token(cfg.APItoken).build()
     update_handler = CommandHandler('update', update_pls)

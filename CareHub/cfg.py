@@ -15,20 +15,20 @@ On Oct 27, 2022 [Multithread branch] I wrote some code that checks a folder for 
 I could implement this again, to make adding pictures way easier and maybe even via the bot. 
 But for now, you have to add pictures to the correct folder and add the name to the list. 
 '''
-available_pictures = ["Images_and_Icons/frame_pic1.jpg",
-                      "Images_and_Icons/frame_pic2.jpg",
-                      "Images_and_Icons/frame_pic3.jpg",
-                      "Images_and_Icons/frame_pic4.jpg"]
+available_pictures = ["/home/pi/projekt_test/CareHub/Images_and_Icons/frame_pic1.jpg",
+                      "/home/pi/projekt_test/CareHub/Images_and_Icons/frame_pic2.jpg",
+                      "/home/pi/projekt_test/CareHub/Images_and_Icons/frame_pic3.jpg",
+                      "/home/pi/projekt_test/CareHub/Images_and_Icons/frame_pic4.jpg"]
 frame_pictures = []
 current_picture = 0
 
-icons = ["Images_and_Icons/happy_icon.png",
-         "Images_and_Icons/sad_icon.png"]
+icons = ["/home/pi/projekt_test/CareHub/Images_and_Icons/happy_icon.png",
+         "/home/pi/projekt_test/CareHub/Images_and_Icons/sad_icon.png"]
 tkinter_icons = []
 
-call_pictures = ["Images_and_Icons/Gabs.jpg",
-                 "Images_and_Icons/Sabi.jpg",
-                 "Images_and_Icons/Gruppe.jpg"]
+call_pictures = ["/home/pi/projekt_test/CareHub/Images_and_Icons/Gabs.jpg",
+                 "/home/pi/projekt_test/CareHub/Images_and_Icons/Sabi.jpg",
+                 "/home/pi/projekt_test/CareHub/Images_and_Icons/Gruppe.jpg"]
 call_icons = []
 
 # global Tkinter windows

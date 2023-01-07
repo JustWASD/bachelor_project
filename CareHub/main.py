@@ -29,9 +29,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if cfg.user_id_list.count(update.effective_chat.id) > 0:
         await context.bot.send_message(chat_id=update.effective_chat.id,
                                        text="Hallo! Hier erhalten Sie Benachrichtigungen"
-                                            "von CareHub.\n"
+                                            "von Ihrem CareHub.\n"
                                             "Schicken Sie /update in den Chat um CareHub nach"
-                                            "einem Stimmungs-Update zu fragen!")
+                                            "einem Stimmungs-Update zu fragen!\n"
+                                            "Es wird automatisch um 8:30, 12:00 und 16:30 Uhr nach einem Update gefragt.")
     else:
         print("Unknown user tried to use the bot!")
         await context.bot.send_message(chat_id=update.effective_chat.id,
@@ -70,7 +71,7 @@ async def update_pls(update: Update, context: ContextTypes.DEFAULT_TYPE):
     #print(context)
     if cfg.user_id_list.count(update.effective_chat.id) > 0:
         await context.bot.send_message(chat_id=update.effective_chat.id,
-                                       text="Ein Update wird an CareHub geschickt! Bitte warten Sie bis die Antowort kommt.")
+                                       text="Ein Update wird an CareHub geschickt! Bitte warten Sie bis die Antwort kommt.")
 
         cfg.update_mood = gui.draw_window_thread()
 
@@ -112,7 +113,7 @@ async def send_call_failed_notification(user_index):
     await telegram.Bot(cfg.APItoken).sendMessage(chat_id=cfg.user_id_list[user_index],
                                                  text="Es ist leider zu lange Zeit vergangen und "
                                                       "der Videocall wurde beendet!\n"
-                                                      "Meld dich bitte bei Gelegenheit!")
+                                                      "Melde dich bitte bei Gelegenheit!")
     print("Call Failed notification sent!")
 
 

@@ -38,6 +38,13 @@ def start_call(user_index):
     # logs in
     login.send_keys("CareHub")
     login.send_keys(Keys.RETURN)
+    time.sleep(3)
+    # Change quality here:
+    driver.find_element(By.CLASS_NAME, 'current-video-quality').click()
+    slider = driver.find_element(By.CLASS_NAME, 'css-hph1qt-slider custom-slider')
+    for i in range(1):
+        slider.send_keys(Keys.RIGHT)
+    driver.find_element(By.CLASS_NAME, 'css-4tkmlg-button-closeIcon').click()
 
     # wait 2min30secs for second person to join the call
     try:

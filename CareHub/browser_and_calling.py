@@ -39,11 +39,12 @@ def start_call(user_index):
     login.send_keys("CareHub")
     login.send_keys(Keys.RETURN)
     time.sleep(3)
-    # Change quality here:
+    # This block turns the video quality down by 2 for a smoother experience:
     driver.find_element(By.CLASS_NAME, 'current-video-quality').click()
-    slider = driver.find_element(By.CLASS_NAME, 'css-hph1qt-slider custom-slider')
-    for i in range(1):
-        slider.send_keys(Keys.RIGHT)
+    slider = driver.find_element(By.CLASS_NAME, 'custom-slider')
+    slider.click()
+    for i in range(1): #turns quality down to just one. 
+        slider.send_keys(Keys.LEFT)
     driver.find_element(By.CLASS_NAME, 'css-4tkmlg-button-closeIcon').click()
 
     # wait 2min30secs for second person to join the call

@@ -1,4 +1,4 @@
-# CareHub - most up to date branch: finalizing
+# CareHub V1.0 - The Project
 ## Description
 [Coming Soon]
 

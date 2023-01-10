@@ -1,0 +1,25 @@
+## Lege selbst eine beliebige Beschreibung fest, wozu dient die Ausführung des Scripts?
+
+[Unit]
+
+Description= Starts the CareHub Script on Start Up
+
+## Die Anweisung, das Script bei Systemstart auszuführen und der Pfad, wo sich das Script selbst befindet. Kann je nach Speicherort natürlich variieren.
+
+[Service]
+User=pi
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/pi/.Xauthority
+ExecStart=/usr/bin/python /home/pi/projekt_test/CareHub/main.py
+Restart=always
+RestartSec=10s
+KillMode=process
+TimeoutSec=infinity
+
+## Hier werden notwendige Informationen beschrieben, um den Service bei Systemstart direkt auszuführen.
+
+[Install]
+
+WantedBy=graphical.target
+
+Alias=carehub.Service

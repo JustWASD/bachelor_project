@@ -1,6 +1,6 @@
 """This file is used for config values, user IDs and the API token"""
 
-APItoken= "5597776676:AAG9mMM2BhWv9y10CQ3ooDaVhokWo3cg9fo"
+APItoken= "****"
 
 """
 Authorized Users:
